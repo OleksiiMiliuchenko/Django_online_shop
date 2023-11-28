@@ -3,6 +3,22 @@ import ProductsService from '../services/ProductsService';
 import useProducts from "../hooks/useProducts";
 
 const labels = ["Name", "Description", "Quantity", "Price", "Actions"]
+const ProductListItem = ({product, handleDelete}) => {
+    const {id, name, description, quantity, price} = product;
+
+    return <tr key={id}>
+        <td><a href={'/products/' + id}>{name}</a></td>
+        <td>{description}</td>
+        <td>{quantity}</td>
+        <td>{price}</td>
+        <td>
+            <button onClick={() => handleDelete(id)}> Delete</button>
+            <a href={`/products/${id}/edit`}> Update</a>
+        </td>
+    </tr>
+
+};
+
 const ProductList = () => {
     const {response} = useProducts(ProductsService.getProducts) 
     const [products, setProducts] = useState(response)
@@ -24,39 +40,26 @@ const ProductList = () => {
     }
 
     return (
-        <div className="customers--list">
+        <div>
             <h2><a href="/products/create">Create</a></h2>
-            <table className="table">
+            <table>
                 <thead key="thead">
-                <tr>{labels.map((label, idx) =>
+                <tr>
+                {
+                    labels.map((label, idx) =>
                     <th key={idx}> {label} </th>)
                 }
                 </tr>
                 </thead>
                 <tbody>
-                {products.map((p) =>
-                    <ProductListItem product={p} handleDelete={() => handleDelete(p.id)}/>)
+                {
+                    products.map((product) =>
+                    <ProductListItem product={product} handleDelete={() => handleDelete(product.id)}/>)
                 }
                 </tbody>
             </table>
         </div>
-    );
-}
+    )
+};
 
-export default ProductList
-
-const ProductListItem = ({product, handleDelete}) => {
-    const {id, name, description, quantity, price} = product;
-
-    return <tr key={id}>
-        <td><a href={'/products/' + id}>{name}</a></td>
-        <td>{description}</td>
-        <td>{quantity}</td>
-        <td>{price}</td>
-        <td>
-            <button onClick={handleDelete}> Delete</button>
-            <a href={`/products/${id}/edit`}> Update</a>
-        </td>
-    </tr>
-
-}
+export default ProductList;

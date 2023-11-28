@@ -1,25 +1,29 @@
 import {useState, useEffect, useContext} from 'react';
+import {AuthContext} from "../contexts/AuthContext";
 
 const Header = () => {
-   const [isAuth, setIsAuth] = useState(false);
+    const [isAuth, setIsAuth] = useState(false);
+    const authData = useContext(AuthContext)
 
-   useEffect(() => {
+    useEffect(() => {
      if (localStorage.getItem('access_token') !== null) {
         setIsAuth(true);
       }
     }, [isAuth]);
 
-     return (
-      <div>
+    console.log(authData)
+
+    return (
         <header>
-          <a href="/">JWT Authentification</a>
-          <div>
-          {isAuth ? <a href="/profile">profile</a> :
-                    <a href="/login">Login</a>}
-          </div>
+        <a href="/">Home</a>
+        <div>
+            {isAuth ?
+                <a href="/profile">profile</a> :
+                <a href="/login">Login</a>
+            }
+        </div>
         </header>
-       </div>
-     );
+    );
 }
 
 export default Header;

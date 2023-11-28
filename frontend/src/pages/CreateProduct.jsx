@@ -1,15 +1,14 @@
 import ProductsInputForm from "../components/ProductsInputForm";
+import ProductsService from "../services/ProductsService";
 
 const CreateProduct = () => {
     return (
         <div>
-            <ProductsInputForm method={"Create"} initialData={{
-                id: "",
-                name: "",
-                description: "",
-                quantity: "",
-                price: "",
-            }}/>
+            <ProductsInputForm
+                title={"Create new product"}
+                method={ProductsService.createProduct}
+                initialData={{}}
+            />
         </div>
     );
 }

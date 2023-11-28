@@ -3,10 +3,10 @@ import {createContext, useState, useEffect} from "react";
 const AuthContext = createContext({});
 
 const AuthProvider = ({children}) => {
-    const [token, setToken] = useState()
+    const [token, setToken] = useState("")
 
     useEffect(() => {
-
+        setToken("token")
     }, []);
 
     const authData = {
@@ -19,3 +19,5 @@ const AuthProvider = ({children}) => {
         </AuthContext.Provider>
     )
 };
+
+export {AuthContext, AuthProvider};

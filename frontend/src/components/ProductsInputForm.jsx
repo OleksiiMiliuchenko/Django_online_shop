@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
-import ProductsService from "../services/ProductsService";
+import {useNavigate} from "react-router-dom";
 
-const ProductsInputForm = ({ method, onSubmit, initialData }) => {
+const ProductsInputForm = ({ title, method, initialData }) => {
     const [formData, setFormData] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if(initialData){
+        if (initialData) {
             setFormData(initialData)
         }
     }, [initialData]);
@@ -15,35 +16,38 @@ const ProductsInputForm = ({ method, onSubmit, initialData }) => {
         setFormData(values => ({...values, [name]: value}));
     }
 
-    const handleSubmit = (event) => {
-        if (method === "Update") {
-            ProductsService.updateProduct({id: initialData.id, ...formData, user_id: 1, category_id: 1});
-        } else if (method === "Create") {
-            ProductsService.createProduct({...formData, user_id: 1, category_id: 1})
-        }
+    const onSubmit = (event) => {
+        event.preventDefault()
+        method({...formData, user_id: 1, category_id: 1})
+
+        navigate("/")
     }
 
     return (
         <div>
             <a href="/">Home</a>
-            <h1> {method} </h1>
+            <h1> {title} </h1>
             <form onSubmit={onSubmit}>
                 <label>name: </label><br/>
                 <input
-                    id="name" name="name" value={formData.name || ''} onChange={handleChange} required
-                /><br/><br/>
+                    id="name" name="name" value={formData.name || ""} onChange={handleChange} required
+                />
+                <br/><br/>
                 <label>description: </label><br/>
                 <input
-                    id="description" name="description" value={formData.description || ''} onChange={handleChange}
-                /><br/><br/>
+                    id="description" name="description" value={formData.description || ""} onChange={handleChange}
+                />
+                <br/><br/>
                 <label>quantity: </label><br/>
                 <input
-                    type="number" id="quantity" name="quantity" value={formData.quantity || ''} onChange={handleChange}
-                /><br/><br/>
+                    type="number" id="quantity" name="quantity" value={formData.quantity || ""} onChange={handleChange} required
+                />
+                <br/><br/>
                 <label>price: </label><br/>
                 <input
-                    type="number" id="price" name="price" value={formData.price || ''} onChange={handleChange} required
-                /><br/><br/>
+                    type="number" id="price" name="price" value={formData.price || ""} onChange={handleChange} required
+                />
+                <br/><br/>
 
                 <input type="submit"/>
             </form>

@@ -22,9 +22,9 @@ from home import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("home.urls")),
+    path("token/", include("users.urls")),
     path("api/products/", include("products.urls")),
     path("api/cart/", include("shopping_cart.urls")),
-    path("token/", include("users.urls")),
 ]
 
 handler404 = views.page_not_found
