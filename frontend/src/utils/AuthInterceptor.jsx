@@ -4,35 +4,37 @@ import AuthService from "../services/AuthService";
 let flag = true;
 
 axios.interceptors.response.use(
-     (response) => response,
-    async (error) => {
-        let access = localStorage.getItem("access_token")
-        let refresh = localStorage.getItem("refresh_token")
+  (response) => response,
+  async (error) => {
+    let access = localStorage.getItem("access_token");
+    let refresh = localStorage.getItem("refresh_token");
 
-        if (error.response.status === 401 && flag) {
-            const response = await AuthService.refresh({refresh: refresh})
+    if (error.response.status === 401 && flag) {
+      const response = await AuthService.refresh({ refresh: refresh });
 
-            localStorage.setItem("access_token", response.data.access);
-            localStorage.setItem("refresh_token", response.data.refresh);
-            localStorage.clear()
+      localStorage.setItem("access_token", response.data.access);
+      localStorage.setItem("refresh_token", response.data.refresh);
+      localStorage.clear();
 
-            return;
-        }
+      console.log("401 intercepted");
 
-        // localStorage.clear()
+      return;
+    }
 
-        // if (error.response.stat === 400 && flag){
-        //
-        //     AuthService.logout({refresh: refresh},
-        //     {
-        //         headers: {"Authorization": "Bearer " + access}
-        //         },
-        //     )
-        //
-        //     return "CCC";
-        // }
+    if (error.response.stat === 400 && flag) {
+      AuthService.logout(
+        { refresh: refresh },
+        {
+          headers: { Authorization: "Bearer " + access },
+        },
+      );
 
-        flag = false;
-        return "BBB";
-    },
-)
+      console.log("400 intercepted");
+
+      return;
+    }
+
+    flag = false;
+    return "smth wrong";
+  },
+);

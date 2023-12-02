@@ -1,29 +1,21 @@
-import {useState, useEffect, useContext} from 'react';
-import {AuthContext} from "../contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const Header = () => {
-    const [isAuth, setIsAuth] = useState(false);
-    const authData = useContext(AuthContext)
+  const { isAuth } = useAuthContext();
 
-    useEffect(() => {
-     if (localStorage.getItem('access_token') !== null) {
-        setIsAuth(true);
-      }
-    }, [isAuth]);
+  useEffect(() => {
+    console.log(isAuth);
+  }, [isAuth]);
 
-    console.log(authData)
-
-    return (
-        <header>
-        <a href="/">Home</a>
-        <div>
-            {isAuth ?
-                <a href="/profile">profile</a> :
-                <a href="/login">Login</a>
-            }
-        </div>
-        </header>
-    );
-}
+  return (
+    <header>
+      <a href="/">Home</a>
+      <div>
+        {isAuth ? <a href="/profile">profile</a> : <a href="/login">Login</a>}
+      </div>
+    </header>
+  );
+};
 
 export default Header;

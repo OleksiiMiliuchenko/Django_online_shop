@@ -1,23 +1,23 @@
-import {createContext, useState, useEffect} from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 
 const AuthContext = createContext({});
 
-const AuthProvider = ({children}) => {
-    const [token, setToken] = useState("")
+const AuthProvider = ({ children }) => {
+  const [isAuth, setIsAuth] = useState(false);
 
-    useEffect(() => {
-        setToken("token")
-    }, []);
+  useEffect(() => {
+    setIsAuth(true);
+  }, []);
 
-    const authData = {
-        token: token,
-    };
+  const authData = {
+    isAuth: isAuth,
+  };
 
-    return (
-        <AuthContext.Provider value={authData}>
-            {children}
-        </AuthContext.Provider>
-    )
+  return (
+    <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>
+  );
 };
 
-export {AuthContext, AuthProvider};
+const useAuthContext = () => useContext(AuthContext);
+
+export { useAuthContext, AuthProvider };
