@@ -4,16 +4,7 @@ const Profile = () => {
   const logout = async (event) => {
     event.preventDefault();
 
-    AuthService.logout(
-      { refresh: localStorage.getItem("refresh_token") },
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      },
-    )
-      .then()
-      .catch(console.log);
+    await AuthService.logout();
   };
 
   return (

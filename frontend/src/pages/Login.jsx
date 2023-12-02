@@ -13,13 +13,7 @@ const Login = () => {
       password: password,
     };
 
-    const response = await AuthService.login(data);
-    const access = response.data.access;
-    const refresh = response.data.refresh;
-
-    localStorage.clear();
-    localStorage.setItem("access_token", access);
-    localStorage.setItem("refresh_token", refresh);
+    await AuthService.login(data);
   };
 
   return (

@@ -4,8 +4,7 @@ const API_URL = "http://127.0.0.1:8000/api/products/";
 
 export default class ProductsService {
   static getProducts() {
-    const url = `${API_URL}`;
-    return axios.get(url);
+    return axios.get(API_URL);
   }
 
   static getProduct(id) {
@@ -14,8 +13,7 @@ export default class ProductsService {
   }
 
   static createProduct(product) {
-    const url = `${API_URL}`;
-    return axios.post(url, product);
+    return axios.post(API_URL, product);
   }
 
   static updateProduct(product) {
