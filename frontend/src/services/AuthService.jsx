@@ -15,6 +15,21 @@ export default class AuthService {
     return response;
   }
 
+  static async register(data) {
+    const user = await axios.post(API_URL + "register/", data);
+
+    if (user?.status === 201) {
+      const response = await AuthService.login({
+        username: data.username,
+        password: data.password,
+      });
+
+      return response;
+    } else {
+      return user;
+    }
+  }
+
   static async logout() {
     const access = localStorage.getItem("access");
     const refresh = localStorage.getItem("refresh");
@@ -25,26 +40,24 @@ export default class AuthService {
       { headers: { Authorization: `Bearer ${access}` } },
     );
 
-    if (response?.status === 205 || !response) {
-      localStorage.clear();
-    }
+    localStorage.clear();
 
     return response;
   }
 
   static async refresh() {
-    let refresh = localStorage.getItem("refresh");
+    const token = localStorage.getItem("refresh");
 
     const response = await axios.post(API_URL + "token/refresh/", {
-      refresh: refresh,
+      refresh: token,
     });
 
     const access = response.data.access;
-    refresh = response.data.refresh;
+    const refresh = response.data.refresh;
 
     localStorage.clear();
-    localStorage.setItem("access", refresh);
-    localStorage.setItem("refresh", access);
+    localStorage.setItem("access", access);
+    localStorage.setItem("refresh", refresh);
 
     return response;
   }

@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const login = async (event) => {
     event.preventDefault();
@@ -14,6 +16,8 @@ const Login = () => {
     };
 
     await AuthService.login(data);
+
+    navigate("/");
   };
 
   return (

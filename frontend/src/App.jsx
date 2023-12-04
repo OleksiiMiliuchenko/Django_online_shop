@@ -9,6 +9,7 @@ import ProductsList from "./components/ProductsList";
 import ViewProduct from "./pages/ViewProduct";
 import CreateProduct from "./pages/CreateProduct";
 import UpdateProduct from "./pages/UpdateProduct";
+import Register from "./pages/Register";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
 
           <Route path="/" element={<ProductsList />} exact />

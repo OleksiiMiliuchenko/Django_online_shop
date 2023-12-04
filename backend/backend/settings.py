@@ -85,12 +85,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        # 'ENGINE': 'django.db.backends.postgresql',
         'ENGINE': config("DB_ENGINE"),
         'NAME': config("DB_NAME"),
         'USER': config("DB_USER"),
@@ -139,11 +134,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = True
-
-# CORS_ORIGIN_WHITELIST = ([
-#    'https://localhost:3000',
-# ])
+CORS_ORIGIN_WHITELIST = ([
+    "http://localhost:3000",
+])
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -152,16 +145,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # 'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    # 'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
-    'ACCESS_TOKEN_LIFETIME': timedelta(
-        # days=1,
-        seconds=5,
-    ),
-    'REFRESH_TOKEN_LIFETIME': timedelta(
-        days=1,
-        # seconds=6,
-    ),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }

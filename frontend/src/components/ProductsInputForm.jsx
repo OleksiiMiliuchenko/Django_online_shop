@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ProductsInputForm = ({ title, method, initialData }) => {
-  const [formData, setFormData] = useState({});
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (initialData) {

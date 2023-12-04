@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 
 const Header = () => {
@@ -12,7 +12,13 @@ const Header = () => {
     <header>
       <a href="/">Home</a>
       <div>
-        {isAuth ? <a href="/profile">profile</a> : <a href="/login">Login</a>}
+        {isAuth ? (
+          <a href="/profile">Profile</a>
+        ) : (
+          <div>
+            <a href="/login">Login</a> | <a href="/register">Register</a>
+          </div>
+        )}
       </div>
     </header>
   );
