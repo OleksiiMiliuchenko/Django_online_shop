@@ -1,17 +1,20 @@
 from django.shortcuts import get_object_or_404
 
+from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 
 from .models import Product
 from .serializers import ProductSerializer
-from users.permissions import IsAuthor
 
 
 class ProductList(APIView):
-    # permissions = [IsAuthenticated]
+    permission_classes = (
+        IsAuthenticated,
+    )
 
     def get(self, request, format=None):
         product = Product.objects.all()
@@ -27,24 +30,26 @@ class ProductList(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProductDetails(APIView):
-    # permissions = [IsAuthor]
+class ProductDetails(
+    GenericAPIView,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+    DestroyModelMixin,
+):
+    permission_classes = (
+        IsAuthenticated,
+        # IsAuthor,
+    )
+    serializer_class = ProductSerializer
 
-    def get(self, request, pk, format=None):
-        product = get_object_or_404(Product, pk=pk)
-        serializer = ProductSerializer(product)
-        return Response(serializer.data)
+    def get_queryset(self):
+        return Product.objects.filter(user_id=self.request.user.id)
 
-    def put(self, request, pk, format=None):
-        product = get_object_or_404(Product, pk=pk)
-        serializer = ProductSerializer(product, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
-    def delete(self, request, pk, format=None):
-        product = get_object_or_404(Product, pk=pk)
-        product.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
