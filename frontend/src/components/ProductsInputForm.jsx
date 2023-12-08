@@ -18,14 +18,13 @@ const ProductsInputForm = ({ title, method, initialData }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    method({ ...formData, user_id: 1, category_id: 1 });
+    method({ ...formData, user: 1, category_id: 1 });
 
     navigate("/");
   };
 
   return (
     <div>
-      <a href="/">Home</a>
       <h1> {title} </h1>
       <form onSubmit={onSubmit}>
         <label>name: </label>

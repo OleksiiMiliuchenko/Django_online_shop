@@ -19,12 +19,10 @@ export default class AuthService {
     const user = await axios.post(API_URL + "register/", data);
 
     if (user?.status === 201) {
-      const response = await AuthService.login({
+      return await AuthService.login({
         username: data.username,
         password: data.password,
       });
-
-      return response;
     } else {
       return user;
     }

@@ -23,12 +23,14 @@ const ProductListItem = ({ product, handleDelete }) => {
 };
 
 const ProductList = () => {
-  const { response } = useProducts(ProductsService.getProducts);
-  const [products, setProducts] = useState(response);
+  const { response, loading } = useProducts(ProductsService.getProducts);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    setProducts(response);
-  }, [response]);
+      if (!loading && products) {
+          setProducts(response.results);
+      }
+  }, [loading, products]);
 
   const handleDelete = async (id) => {
     try {

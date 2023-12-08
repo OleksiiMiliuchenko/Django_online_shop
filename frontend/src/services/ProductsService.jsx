@@ -13,16 +13,25 @@ export default class ProductsService {
   }
 
   static createProduct(product) {
-    return axios.post(API_URL, product);
+    const access = localStorage.getItem("access")
+    return axios.post(API_URL + "create/", product,
+        { headers: { Authorization: `Bearer ${access}` } },
+    );
   }
 
   static updateProduct(product) {
-    const url = `${API_URL}${product.id}`;
-    return axios.put(url, product);
+    const access = localStorage.getItem("access")
+    const url = `${API_URL}details/${product.id}`;
+    return axios.put(url, product,
+        { headers: { Authorization: `Bearer ${access}` } },
+    );
   }
 
   static deleteProduct(product) {
-    const url = `${API_URL}${product.id}`;
-    return axios.delete(url);
+    const access = localStorage.getItem("access")
+    const url = `${API_URL}details/${product.id}`;
+    return axios.delete(url,
+    { headers: { Authorization: `Bearer ${access}` } },
+    );
   }
 }
