@@ -1,21 +1,20 @@
 import { useState, useEffect, createContext, useContext } from "react";
+import { getTokens } from "../utils/manageTokens";
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
-  const access = localStorage.getItem("access");
-  const refresh = localStorage.getItem("refresh");
+  const { access, refresh } = getTokens();
+
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-    if (access) {
+    if (access && refresh) {
       setIsAuth(true);
     }
-  }, [access]);
+  }, [access, refresh]);
 
   const authData = {
-    access: access,
-    refresh: refresh,
     isAuth: isAuth,
   };
 

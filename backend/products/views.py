@@ -12,7 +12,6 @@ from .serializers import ProductSerializer
 
 
 class ProductListView(APIView, PageNumberPagination):
-
     def get(self, request, format=None):
         try:
             query = request.GET
@@ -31,21 +30,6 @@ class ProductListView(APIView, PageNumberPagination):
 
         except FieldError:
             return Response("No model field with such name", status.HTTP_400_BAD_REQUEST)
-
-
-# class ProductListView(ListAPIView):
-#     serializer_class = ProductSerializer
-#
-#     def get_queryset(self):
-#         query = self.request.GET
-#
-#         filter_statement = dict(map(
-#             lambda statement: statement.split(":"),
-#             query.getlist("filter[]")
-#         ))
-#         sort_statement = query.getlist("sort[]")
-#
-#         return Product.objects.filter(**filter_statement).order_by(*sort_statement).all()
 
 
 class ProductRetrieveView(RetrieveAPIView):

@@ -5,7 +5,8 @@ const Header = () => {
   const { isAuth } = useAuthContext();
 
   useEffect(() => {
-    console.log(isAuth);
+    if (isAuth) {
+    }
   }, [isAuth]);
 
   return (

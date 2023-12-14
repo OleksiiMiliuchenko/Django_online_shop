@@ -18,7 +18,7 @@ const ProductsInputForm = ({ title, method, initialData }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    method({ ...formData, user: 1, category_id: 1 });
+    method({ ...formData, category_id: 1 });
 
     navigate("/");
   };

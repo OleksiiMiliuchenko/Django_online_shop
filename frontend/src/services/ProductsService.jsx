@@ -1,37 +1,29 @@
-import axios from "axios";
+import instance from "../utils/AuthInterceptor";
 
 const API_URL = "http://127.0.0.1:8000/api/products/";
 
 export default class ProductsService {
   static getProducts() {
-    return axios.get(API_URL);
+    return instance.get(API_URL);
   }
 
   static getProduct(id) {
     const url = `${API_URL}${id}`;
-    return axios.get(url);
+    return instance.get(url);
   }
 
   static createProduct(product) {
-    const access = localStorage.getItem("access")
-    return axios.post(API_URL + "create/", product,
-        { headers: { Authorization: `Bearer ${access}` } },
-    );
+    const url = API_URL + "create/";
+    return instance.post(url, product);
   }
 
   static updateProduct(product) {
-    const access = localStorage.getItem("access")
     const url = `${API_URL}details/${product.id}`;
-    return axios.put(url, product,
-        { headers: { Authorization: `Bearer ${access}` } },
-    );
+    return instance.put(url, product);
   }
 
   static deleteProduct(product) {
-    const access = localStorage.getItem("access")
     const url = `${API_URL}details/${product.id}`;
-    return axios.delete(url,
-    { headers: { Authorization: `Bearer ${access}` } },
-    );
+    return instance.delete(url);
   }
 }

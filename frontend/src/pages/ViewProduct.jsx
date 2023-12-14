@@ -5,12 +5,14 @@ import ProductsService from "../services/ProductsService";
 
 const ViewProduct = () => {
   const { id } = useParams();
-  const { response } = useProducts(ProductsService.getProduct, id);
+  const { response, loading } = useProducts(ProductsService.getProduct, id);
   const [product, setProduct] = useState({});
 
   useEffect(() => {
-    setProduct(response);
-  }, [response]);
+    if (!loading && product) {
+      setProduct(response);
+    }
+  }, [loading, product]);
 
   return (
     <div>

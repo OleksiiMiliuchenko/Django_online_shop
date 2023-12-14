@@ -1,11 +1,14 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers
+
+from rest_framework.serializers import ModelSerializer, EmailField, CharField, ValidationError
+
 from rest_framework.validators import UniqueValidator
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.exceptions import InvalidToken
 
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+class CookieTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
@@ -15,14 +18,25 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
-class RegisterSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(
+class CookieTokenRefreshSerializer(TokenRefreshSerializer):
+    refresh = None
+
+    def validate(self, attrs):
+        attrs['refresh'] = self.context["request"].COOKIES.get("refresh")
+        if attrs["refresh"]:
+            return super().validate(attrs)
+        else:
+            raise InvalidToken("No valid token found in cookie 'refresh'")
+
+
+class RegisterSerializer(ModelSerializer):
+    email = EmailField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password2 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = CharField(write_only=True, required=True, validators=[validate_password])
 
     class Meta:
         model = User
@@ -34,7 +48,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+            raise ValidationError({"password": "Password fields didn't match."})
 
         return attrs
 

@@ -27,9 +27,9 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-      if (!loading && products) {
-          setProducts(response.results);
-      }
+    if (!loading && products) {
+      setProducts(response.results);
+    }
   }, [loading, products]);
 
   const handleDelete = async (id) => {
@@ -56,7 +56,7 @@ const ProductList = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
+          {products?.map((product) => (
             <ProductListItem
               key={product.id}
               product={product}
